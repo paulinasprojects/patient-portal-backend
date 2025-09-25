@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: patient-portal
+  datasource:
+    url: jdbc:mysql://localhost:3306/patient_portal?createDatabaseIfNotExist=true
+    username: ${dbUser}
+    password: ${dbPassword}
+  jpa:
+    show-sql: true
