@@ -14,7 +14,6 @@ public class Patient {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-
   @Column(name = "id")
   private Long id;
 
@@ -28,8 +27,8 @@ public class Patient {
   private String password;
 
   @OneToOne(mappedBy = "patient", cascade = CascadeType.REMOVE)
-  private Address address;
+  private PatientAddress address;
 
   @OneToOne(mappedBy = "patient", cascade = CascadeType.REMOVE)
-  private Profile profile;
+  private PatientProfile profile;
 }

@@ -8,17 +8,20 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "profile")
-public class Profile {
+@Table(name = "doctor_profile")
+public class DoctorProfile {
   @Id
   @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @Column(name = "specialty")
+  private String specialty;
 
   @Column(name = "bio")
   private String bio;
@@ -35,5 +38,5 @@ public class Profile {
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "id")
   @MapsId
-  private Patient patient;
+  private Doctor doctor;
 }
