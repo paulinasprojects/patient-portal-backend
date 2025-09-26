@@ -3,13 +3,13 @@ package com.paulinasprojects.patientportal.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "patients")
@@ -29,11 +29,20 @@ public class Patient {
   @Column(name = "password")
   private String password;
 
-  @OneToOne(mappedBy = "patient", cascade = CascadeType.REMOVE)
-  private PatientAddress address;
+  @Column(name = "address")
+  private String address;
 
-  @OneToOne(mappedBy = "patient", cascade = CascadeType.REMOVE)
-  private PatientProfile profile;
+  @Column(name = "phone_number")
+  private String phoneNumber;
+
+  @Column(name = "date_of_birth")
+  private LocalDate dateOfBirth;
+
+  @Column(name = "registered_date")
+  private LocalDate registeredDate;
+
+  @Column(name = "bio")
+  private String bio;
 
   @ManyToMany(mappedBy = "patients")
   private Set<Doctor> doctors = new HashSet<>();

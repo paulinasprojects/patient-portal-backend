@@ -3,12 +3,12 @@ package com.paulinasprojects.patientportal.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -29,11 +29,23 @@ import java.util.Set;
     @Column(name = "password")
     private String password;
 
-    @OneToOne(mappedBy = "doctor", cascade = CascadeType.REMOVE)
-    private DoctorAddress address;
+    @Column(name = "specialty")
+    private String specialty;
 
-    @OneToOne(mappedBy = "doctor", cascade = CascadeType.REMOVE)
-    private DoctorProfile profile;
+  @Column(name = "bio")
+  private String bio;
+
+  @Column(name = "address")
+    private String address;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
+
+    @Column(name = "registered_date")
+    private LocalDate registeredDate;
 
     @ManyToMany
     @JoinTable(
