@@ -3,6 +3,9 @@ package com.paulinasprojects.patientportal.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -31,4 +34,17 @@ public class Patient {
 
   @OneToOne(mappedBy = "patient", cascade = CascadeType.REMOVE)
   private PatientProfile profile;
+
+  @ManyToMany(mappedBy = "patients")
+  private Set<Doctor> doctors = new HashSet<>();
+
+  public void addDoctor(Doctor doctor) {
+    doctors.add(doctor);
+    doctor.getPatients().add(this);
+  }
+
+  public void removeDoctor(Doctor doctor) {
+    doctors.remove(doctor);
+    doctor.getPatients().remove(this);
+  }
 }
