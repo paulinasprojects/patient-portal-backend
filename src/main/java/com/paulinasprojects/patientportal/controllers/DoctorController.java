@@ -2,6 +2,8 @@ package com.paulinasprojects.patientportal.controllers;
 
 import com.paulinasprojects.patientportal.dtos.DoctorRequestDTO;
 import com.paulinasprojects.patientportal.dtos.DoctorResponseDTO;
+import com.paulinasprojects.patientportal.dtos.UpdateDoctorRequestDTO;
+import com.paulinasprojects.patientportal.dtos.UpdateDoctorResponseDTO;
 import com.paulinasprojects.patientportal.services.DoctorService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -26,5 +28,16 @@ public class DoctorController {
   public ResponseEntity<DoctorResponseDTO> createDoctor(@Valid @RequestBody DoctorRequestDTO doctorRequestDTO) {
     DoctorResponseDTO doctorResponseDTO = doctorService.createDoctor(doctorRequestDTO);
     return ResponseEntity.ok().body(doctorResponseDTO);
+  }
+
+  @PutMapping("/doctors/{id}")
+  public UpdateDoctorResponseDTO updateDoctor(@PathVariable(name = "id") Long id, @RequestBody UpdateDoctorRequestDTO request) {
+    return doctorService.updateDoctor(id, request);
+  }
+
+  @DeleteMapping("/doctors/{id}")
+  public ResponseEntity<Void> deleteDoctor(@PathVariable(name = "id") Long id) {
+    doctorService.deleteDoctor(id);
+    return ResponseEntity.noContent().build();
   }
 }

@@ -2,41 +2,42 @@ package com.paulinasprojects.patientportal.mappers;
 
 import com.paulinasprojects.patientportal.dtos.DoctorRequestDTO;
 import com.paulinasprojects.patientportal.dtos.DoctorResponseDTO;
+import com.paulinasprojects.patientportal.dtos.UpdateDoctorRequestDTO;
+import com.paulinasprojects.patientportal.dtos.UpdateDoctorResponseDTO;
 import com.paulinasprojects.patientportal.entities.Doctor;
-
+import org.mapstruct.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
+@Mapper(componentModel = "spring")
 public interface DoctorMapper {
-  static DoctorResponseDTO toDto(Doctor doctor) {
-    DoctorResponseDTO doctorDTO = new DoctorResponseDTO();
-    doctorDTO.setId(doctor.getId());
-    doctorDTO.setBio(doctor.getBio());
-    doctorDTO.setSpecialty(doctor.getSpecialty());
-    doctorDTO.setName(doctor.getName());
-    doctorDTO.setAddress(doctor.getAddress());
-    doctorDTO.setEmail(doctor.getEmail());
-    doctorDTO.setRole(doctor.getRole());
-    doctorDTO.setDateOfBirth(doctor.getDateOfBirth().toString());
-    doctorDTO.setRegisteredDate(doctor.getRegisteredDate().toString());
-    return doctorDTO;
+
+  @Mapping(target = "dateOfBirth", source = "dateOfBirth", qualifiedByName = "stringToLocalDate")
+  @Mapping(target = "registeredDate", source = "registeredDate", qualifiedByName = "stringToLocalDateOrNow")
+  Doctor toEntity(DoctorRequestDTO dto);
+
+  @Mapping(target = "dateOfBirth", source = "dateOfBirth", qualifiedByName = "localDateToString")
+  @Mapping(target = "registeredDate", source = "registeredDate", qualifiedByName = "localDateToString")
+  DoctorResponseDTO toDto(Doctor doctor);
+
+  UpdateDoctorResponseDTO toUpdateDto(Doctor doctor);
+
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  void updateEntityFromDto(UpdateDoctorRequestDTO dto, @MappingTarget Doctor doctor);
+
+  @Named("stringToLocalDate")
+  static LocalDate stringToLocalDate(String date) {
+    return (date != null) ? LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE) : null;
   }
 
-  static Doctor toEntity(DoctorRequestDTO doctorRequestDTO) {
-    Doctor doctor = new Doctor();
-    doctor.setName(doctorRequestDTO.getName());
-    doctor.setBio(doctorRequestDTO.getBio());
-    doctor.setSpecialty(doctorRequestDTO.getSpecialty());
-    doctor.setPassword(doctorRequestDTO.getPassword());
-    doctor.setEmail(doctorRequestDTO.getEmail());
-    doctor.setAddress(doctorRequestDTO.getAddress());
-    doctor.setRole(doctorRequestDTO.getRole());
-    doctor.setDateOfBirth(LocalDate.parse(doctorRequestDTO.getDateOfBirth()));
-    if (doctorRequestDTO.getRegisteredDate() != null) {
-      doctor.setRegisteredDate(LocalDate.parse(doctorRequestDTO.getRegisteredDate()));
-    } else {
-      doctor.setRegisteredDate(LocalDate.now());
-    }
-    return doctor;
+  @Named("stringToLocalDateOrNow")
+  static LocalDate stringToLocalDateOrNow(String date) {
+    return (date != null) ? LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE) : LocalDate.now();
+  }
+
+  @Named("localDateToString")
+  static String localDateToString(LocalDate date) {
+    return (date != null) ? date.toString() : null;
   }
 }

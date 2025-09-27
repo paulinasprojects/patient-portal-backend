@@ -2,6 +2,8 @@ package com.paulinasprojects.patientportal.controllers;
 
 import com.paulinasprojects.patientportal.dtos.PatientRequestDTO;
 import com.paulinasprojects.patientportal.dtos.PatientResponseDTO;
+import com.paulinasprojects.patientportal.dtos.UpdatePatientRequestDTO;
+import com.paulinasprojects.patientportal.dtos.UpdatePatientResponseDTO;
 import com.paulinasprojects.patientportal.services.PatientService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -26,6 +28,17 @@ public class PatientController {
   public  ResponseEntity<PatientResponseDTO> createPatient(@Valid @RequestBody PatientRequestDTO patientRequestDTO) {
     PatientResponseDTO patientResponseDTO = patientService.createPatient(patientRequestDTO);
     return ResponseEntity.ok().body(patientResponseDTO);
+  }
+
+  @PutMapping("/patients/{id}")
+  public UpdatePatientResponseDTO updatePatient(@PathVariable(name = "id") Long id, @RequestBody UpdatePatientRequestDTO request) {
+    return patientService.updatePatient(id, request);
+  }
+
+  @DeleteMapping("/patients/{id}")
+  public ResponseEntity<Void> deletePatient(@PathVariable(name = "id") Long id) {
+    patientService.deletePatient(id);
+    return ResponseEntity.noContent().build();
   }
 }
 
