@@ -32,8 +32,12 @@ import java.util.Set;
     @Column(name = "specialty")
     private String specialty;
 
-  @Column(name = "bio")
-  private String bio;
+    @Column(name = "bio")
+    private String bio;
+
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
   @Column(name = "address")
     private String address;

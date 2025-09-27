@@ -44,6 +44,10 @@ public class Patient {
   @Column(name = "bio")
   private String bio;
 
+  @Column(name = "role")
+  @Enumerated(EnumType.STRING)
+  private Role role;
+
   @ManyToMany(mappedBy = "patients")
   private Set<Doctor> doctors = new HashSet<>();
 
